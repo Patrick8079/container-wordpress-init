@@ -19,8 +19,7 @@ services:
     networks:
       - wordpress
   wordpress-init:
-#    image: wordpress:php8.3-apache
-    build: ../.
+    image: ghcr.io/patrick8079/container-wordpress-init:development
     restart: no
     hostname: wordpress-init
     environment:
