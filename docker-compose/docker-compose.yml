@@ -1,0 +1,71 @@
+services:
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: always
+    hostname: wordpress
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: wordpress-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      wordpress-db:
+        condition: "service_started"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - wordpress
+  wordpress-init:
+#    image: wordpress:php8.3-apache
+    build: ../.
+    restart: no
+    hostname: wordpress-init
+    environment:
+      WORDPRESS_DB_HOST: wordpress-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WP_PORT: 80
+      WP_URL: "localhost"
+      WP_USER: admin
+      WP_PASSWORD: admin
+      WP_EMAIL: admin@example.com
+      WP_TITLE: WordPress
+      WP_DESCRIPTION: Just another WordPress Site
+      WP_DEBUG: false
+    entrypoint: /root/init.sh
+    depends_on:
+      wordpress-db:
+        condition: "service_started"
+      wordpress:
+        condition: "service_started"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - wordpress
+  wordpress-db:
+    image: mysql:8.0
+    restart: always
+    hostname: wordpress-db
+    expose:
+      - 3306
+      - 33060
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - wordpress-db:/var/lib/mysql
+    networks:
+      - wordpress
+
+volumes:
+  wordpress:
+  wordpress-db:
+networks:
+  wordpress:
+    driver: bridge
