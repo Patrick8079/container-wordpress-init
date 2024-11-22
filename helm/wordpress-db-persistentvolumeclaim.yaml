@@ -5,6 +5,7 @@ metadata:
     io.kompose.service: wordpress-db
   name: wordpress-db
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
