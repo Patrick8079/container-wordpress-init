@@ -33,7 +33,7 @@ spec:
         - name: WP_TITLE
           value: WordPress
         - name: WP_URL
-          value: localhost
+          value: 192.168.178.122
         - name: WP_USER
           value: admin
       image: ghcr.io/patrick8079/container-wordpress-init:development
