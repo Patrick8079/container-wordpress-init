@@ -2,8 +2,8 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   labels:
-    io.kompose.service: ldap
-  name: ldap
+    io.kompose.service: wordpress
+  name: wordpress
 spec:
   storageClassName: manual
   capacity:
